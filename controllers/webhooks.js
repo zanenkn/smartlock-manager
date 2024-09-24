@@ -10,10 +10,10 @@ async function handleCreate(request, res) {
     });
 
     const accessCode = await createAccessCode({
-      name: `Access code for ${bookingDetails.client_name}`,
+      name: `Booking nr. ${request.booking_id} for ${bookingDetails.client_name}`,
       starts_at: formatDate(bookingDetails.start_date_time),
       ends_at: formatDate(bookingDetails.end_date_time),
-      code: bookingDetails.client_phone.slice(-4),
+      preferred_code_length: 4,
     });
 
     console.info(
