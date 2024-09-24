@@ -6,7 +6,11 @@ const bodyParser = require('body-parser');
 
 const verifyWebhookSignature = require('./util/verifyWebhookSignature');
 
-const { handleCreate } = require('./controllers/webhooks');
+const {
+  handleCreate,
+  handleUpdate,
+  handleCancel,
+} = require('./controllers/webhooks');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -20,11 +24,9 @@ app.post('/webhook-catcher', verifyWebhookSignature, async (req, res) => {
     case 'create':
       return await handleCreate(request, res);
     case 'change':
-      console.info('A booking was updated!');
-      break;
+      return await handleUpdate(request, res);
     case 'cancel':
-      console.info('A booking was cancelled!');
-      break;
+      return await handleCancel(request, res);
     default:
       console.info(
         'Some other webhook was received:',

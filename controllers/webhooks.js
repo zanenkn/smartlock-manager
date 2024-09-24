@@ -27,6 +27,16 @@ async function handleCreate(request, res) {
   }
 }
 
+async function handleUpdate(request, res) {
+  console.log(request);
+}
+
+async function handleCancel(request, res) {
+  console.log(request);
+}
+
 module.exports = {
   handleCreate,
+  handleUpdate,
+  handleCancel,
 };
