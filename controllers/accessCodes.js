@@ -17,6 +17,8 @@ async function createAccessCode({
       preferred_code_length,
     });
 
+    console.info('SeamAPI: new access code created');
+
     return newCode;
   } catch (error) {
     throw new Error(`Access code could not be created: ${error.message}`);
@@ -34,6 +36,8 @@ async function getAccessCodeFromBookingId(bookingId) {
       return match && match[1] === String(bookingId);
     });
 
+    console.info('SeamAPI: access code located from booking id');
+
     return accessCode;
   } catch (error) {
     throw new Error(
@@ -50,6 +54,8 @@ async function updateAccessCode({ access_code_id, starts_at, ends_at }) {
       ends_at,
     });
 
+    console.info('SeamAPI: access code updated');
+
     return updatedAccessCode;
   } catch (error) {
     throw new Error(`Access code could not be updated: ${error.message}`);
@@ -61,6 +67,8 @@ async function deleteAccessCode(id) {
     const deletedAccessCode = await seam.accessCodes.delete({
       access_code_id: id,
     });
+
+    console.info('SeamAPI: access code deleted');
 
     return deletedAccessCode;
   } catch (error) {
