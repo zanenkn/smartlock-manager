@@ -23,12 +23,14 @@ const jsonRpcRequest = async ({ method, params, token = null, url = '' }) => {
       requestData,
       { headers }
     );
-    console.info(`SimplyBook JSON-RPC request successful for method ${method}`);
+    console.info(
+      `SimplyBook: JSON-RPC request successful for method ${method}`
+    );
 
     return response.data.result;
   } catch (error) {
     throw new Error(
-      `SimplyBook JSON-RPC request for method ${method} failed: ${error}`
+      `SimplyBook: JSON-RPC request for method ${method} failed: ${error}`
     );
   }
 };
