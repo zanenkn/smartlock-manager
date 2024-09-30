@@ -1,21 +1,20 @@
 const axios = require('axios');
 
-async function sendEmail({ clientName, clientEmail, code }) {
+async function sendEmail({ clientName, clientEmail, code, templateId }) {
   const API_KEY = process.env.BREVO_API_KEY;
 
   const emailData = {
-    sender: {
-      name: "Chamois d'Or SPA",
-      email: process.env.BREVO_EMAIL,
-    },
     to: [
       {
         email: clientEmail,
         name: clientName,
       },
     ],
-    subject: `Your SPA access code is ${code}`,
-    htmlContent: `<html><head></head><body><p>Hello, ${clientName}, thank you for booking with Chamois d'Or SPA. Use this code to access the SPA: ${code}</p></body></html>`,
+    templateId,
+    params: {
+      clientName: clientName,
+      code: code,
+    },
   };
 
   try {

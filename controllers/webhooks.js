@@ -27,6 +27,7 @@ async function handleCreate(request, res) {
       clientName: bookingDetails.client_name,
       clientEmail: bookingDetails.client_email,
       code: accessCode.code,
+      templateId: 1,
     });
 
     console.info(
