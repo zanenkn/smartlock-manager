@@ -36,7 +36,13 @@ async function getAccessCodeFromBookingId(bookingId) {
       return match && match[1] === String(bookingId);
     });
 
-    console.info('SeamAPI: access code located from booking id');
+    console.info(
+      `SeamAPI: ${
+        accessCode
+          ? `access code located for booking ${bookingId}`
+          : `could not locate access code for booking ${bookingId}`
+      }`
+    );
 
     return accessCode;
   } catch (error) {

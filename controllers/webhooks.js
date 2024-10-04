@@ -85,12 +85,16 @@ async function handleCancel(request, res) {
   try {
     const accessCode = await getAccessCodeFromBookingId(request.booking_id);
 
-    const deletedAccessCode = await deleteAccessCode(accessCode.access_code_id);
+    if (accessCode) {
+      const deletedAccessCode = await deleteAccessCode(
+        accessCode.access_code_id
+      );
 
-    console.info(
-      `SUCCESS: Access code ${accessCode.code} successfully deleted!`
-    );
-    return res.status(200).json(deletedAccessCode);
+      console.info(
+        `SUCCESS: Access code ${accessCode.code} successfully deleted!`
+      );
+      return res.status(200).json(deletedAccessCode);
+    }
   } catch (error) {
     console.info(
       'ERROR: failed to handle webhook on trigger "cancel" due to the following error:',
