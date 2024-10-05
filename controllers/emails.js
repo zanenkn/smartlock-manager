@@ -1,6 +1,14 @@
 const axios = require('axios');
 
-async function sendEmail({ clientName, clientEmail, code, templateId }) {
+async function sendEmail({
+  clientName,
+  clientEmail,
+  code,
+  bookingStart,
+  bookingEnd,
+  bookingEvent,
+  templateId,
+}) {
   const API_KEY = process.env.BREVO_API_KEY;
 
   const emailData = {
@@ -12,8 +20,11 @@ async function sendEmail({ clientName, clientEmail, code, templateId }) {
     ],
     templateId,
     params: {
-      clientName: clientName,
-      code: code,
+      clientName,
+      code,
+      bookingStart,
+      bookingEnd,
+      bookingEvent,
     },
   };
 

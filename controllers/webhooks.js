@@ -27,6 +27,9 @@ async function handleCreate(request, res) {
       clientName: bookingDetails.client_name,
       clientEmail: bookingDetails.client_email,
       code: accessCode.code,
+      bookingStart: formatDate(bookingDetails.start_date_time),
+      bookingEnd: formatDate(bookingDetails.end_date_time),
+      bookingEvent: bookingDetails.event_name,
       templateId: 1,
     });
 
@@ -65,6 +68,9 @@ async function handleUpdate(request, res) {
         clientName: bookingDetails.client_name,
         clientEmail: bookingDetails.client_email,
         code: accessCode.code,
+        bookingStart: formatDate(bookingDetails.start_date_time),
+        bookingEnd: formatDate(bookingDetails.end_date_time),
+        bookingEvent: bookingDetails.event_name,
         templateId: 2,
       });
 
