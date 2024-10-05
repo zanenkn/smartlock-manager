@@ -1,4 +1,5 @@
 const dateToISO = require('../util/dateToISO');
+const dateToReadable = require('../util/dateToReadable');
 const { fetchBookingDetails } = require('./bookings');
 const {
   createAccessCode,
@@ -27,8 +28,8 @@ async function handleCreate(request, res) {
       clientName: bookingDetails.client_name,
       clientEmail: bookingDetails.client_email,
       code: accessCode.code,
-      bookingStart: dateToISO(bookingDetails.start_date_time),
-      bookingEnd: dateToISO(bookingDetails.end_date_time),
+      bookingStart: dateToReadable(bookingDetails.start_date_time),
+      bookingEnd: dateToReadable(bookingDetails.end_date_time),
       bookingEvent: bookingDetails.event_name,
       templateId: 1,
     });
@@ -68,8 +69,8 @@ async function handleUpdate(request, res) {
         clientName: bookingDetails.client_name,
         clientEmail: bookingDetails.client_email,
         code: accessCode.code,
-        bookingStart: dateToISO(bookingDetails.start_date_time),
-        bookingEnd: dateToISO(bookingDetails.end_date_time),
+        bookingStart: dateToReadable(bookingDetails.start_date_time),
+        bookingEnd: dateToReadable(bookingDetails.end_date_time),
         bookingEvent: bookingDetails.event_name,
         templateId: 2,
       });
@@ -77,9 +78,9 @@ async function handleUpdate(request, res) {
       console.info(
         `SUCCESS: Access code ${
           accessCode.code
-        } successfully updated, now active from ${dateToISO(
+        } successfully updated, now active from ${dateToReadable(
           bookingDetails.start_date_time
-        )} to ${dateToISO(bookingDetails.end_date_time)}, email sent to ${
+        )} to ${dateToReadable(bookingDetails.end_date_time)}, email sent to ${
           bookingDetails.client_email
         }`
       );
