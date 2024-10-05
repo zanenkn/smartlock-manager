@@ -1,4 +1,4 @@
-function formatDate(dateString) {
+function dateToISO(dateString) {
   const dateInFrance = new Date(`${dateString} GMT+0200`);
 
   const isoStringParts = new Intl.DateTimeFormat('sv-SE', {
@@ -21,4 +21,4 @@ function formatDate(dateString) {
   return isoDate;
 }
 
-module.exports = formatDate;
+module.exports = dateToISO;

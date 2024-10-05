@@ -1,4 +1,4 @@
-const formatDate = require('../util/formatDate');
+const dateToISO = require('../util/dateToISO');
 const { fetchBookingDetails } = require('./bookings');
 const {
   createAccessCode,
@@ -18,8 +18,8 @@ async function handleCreate(request, res) {
 
     const accessCode = await createAccessCode({
       name: `Booking nr. ${request.booking_id} for ${bookingDetails.client_name}`,
-      starts_at: formatDate(bookingDetails.start_date_time),
-      ends_at: formatDate(bookingDetails.end_date_time),
+      starts_at: dateToISO(bookingDetails.start_date_time),
+      ends_at: dateToISO(bookingDetails.end_date_time),
       preferred_code_length: 4,
     });
 
@@ -27,8 +27,8 @@ async function handleCreate(request, res) {
       clientName: bookingDetails.client_name,
       clientEmail: bookingDetails.client_email,
       code: accessCode.code,
-      bookingStart: formatDate(bookingDetails.start_date_time),
-      bookingEnd: formatDate(bookingDetails.end_date_time),
+      bookingStart: dateToISO(bookingDetails.start_date_time),
+      bookingEnd: dateToISO(bookingDetails.end_date_time),
       bookingEvent: bookingDetails.event_name,
       templateId: 1,
     });
@@ -60,16 +60,16 @@ async function handleUpdate(request, res) {
 
       const updatedAccessCode = await updateAccessCode({
         access_code_id: accessCode.access_code_id,
-        starts_at: formatDate(bookingDetails.start_date_time),
-        ends_at: formatDate(bookingDetails.end_date_time),
+        starts_at: dateToISO(bookingDetails.start_date_time),
+        ends_at: dateToISO(bookingDetails.end_date_time),
       });
 
       await sendEmail({
         clientName: bookingDetails.client_name,
         clientEmail: bookingDetails.client_email,
         code: accessCode.code,
-        bookingStart: formatDate(bookingDetails.start_date_time),
-        bookingEnd: formatDate(bookingDetails.end_date_time),
+        bookingStart: dateToISO(bookingDetails.start_date_time),
+        bookingEnd: dateToISO(bookingDetails.end_date_time),
         bookingEvent: bookingDetails.event_name,
         templateId: 2,
       });
@@ -77,9 +77,9 @@ async function handleUpdate(request, res) {
       console.info(
         `SUCCESS: Access code ${
           accessCode.code
-        } successfully updated, now active from ${formatDate(
+        } successfully updated, now active from ${dateToISO(
           bookingDetails.start_date_time
-        )} to ${formatDate(bookingDetails.end_date_time)}, email sent to ${
+        )} to ${dateToISO(bookingDetails.end_date_time)}, email sent to ${
           bookingDetails.client_email
         }`
       );
