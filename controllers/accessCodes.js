@@ -1,7 +1,4 @@
-const { Seam } = require('seam');
 const axios = require('axios');
-
-const seam = new Seam();
 
 async function createAccessCode({
   name,
@@ -101,13 +98,22 @@ async function updateAccessCode({ access_code_id, starts_at, ends_at }) {
 
 async function deleteAccessCode(id) {
   try {
-    const deletedAccessCode = await seam.accessCodes.delete({
-      access_code_id: id,
-    });
+    const response = await axios.delete(
+      'https://connect.getseam.com/access_codes/delete',
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.SEAM_API_KEY}`,
+          'Content-Type': 'application/json',
+        },
+        data: {
+          access_code_id: id,
+        },
+      }
+    );
 
     console.info('SeamAPI: access code deleted');
 
-    return deletedAccessCode;
+    return response.data;
   } catch (error) {
     throw new Error(`Access code could not be deleted: ${error.message}`);
   }
