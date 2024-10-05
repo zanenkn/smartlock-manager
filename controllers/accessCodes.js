@@ -1,4 +1,5 @@
 const { Seam } = require('seam');
+const axios = require('axios');
 
 const seam = new Seam();
 
@@ -9,19 +10,31 @@ async function createAccessCode({
   preferred_code_length,
 }) {
   try {
-    const newCode = await seam.accessCodes.create({
-      device_id: process.env.SEAM_DEVICE_ID,
-      name,
-      starts_at,
-      ends_at,
-      preferred_code_length,
-    });
-
+    const response = await axios.post(
+      'https://connect.getseam.com/access_codes/create',
+      {
+        device_id: process.env.SEAM_DEVICE_ID,
+        name,
+        starts_at,
+        ends_at,
+        preferred_code_length,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.SEAM_API_KEY}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
     console.info('SeamAPI: new access code created');
 
-    return newCode;
+    return response.data.access_code;
   } catch (error) {
-    throw new Error(`Access code could not be created: ${error.message}`);
+    throw new Error(
+      `Access code could not be created: ${
+        error.response ? error.response.data : error.message
+      }`
+    );
   }
 }
 
