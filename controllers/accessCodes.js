@@ -40,11 +40,20 @@ async function createAccessCode({
 
 async function getAccessCodeFromBookingId(bookingId) {
   try {
-    const allCodes = await seam.accessCodes.list({
-      device_id: process.env.SEAM_DEVICE_ID,
-    });
+    const response = await axios.post(
+      'https://connect.getseam.com/access_codes/list',
+      {
+        device_id: process.env.SEAM_DEVICE_ID,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.SEAM_API_KEY}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
 
-    const accessCode = allCodes.find((accessCode) => {
+    const accessCode = response.data.access_codes.find((accessCode) => {
       const match = accessCode.name.match(/Booking nr\.\s*(\d+)\s*for/);
       return match && match[1] === String(bookingId);
     });
@@ -53,7 +62,7 @@ async function getAccessCodeFromBookingId(bookingId) {
       `SeamAPI: ${
         accessCode
           ? `access code located for booking ${bookingId}`
-          : `could not locate access code for booking ${bookingId}`
+          : `no access code attached to booking ${bookingId}`
       }`
     );
 
