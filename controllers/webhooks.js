@@ -47,27 +47,39 @@ async function handleUpdate(request, res) {
   console.info(`TRIGGER: a booking with id ${request.booking_id} was updated`);
 
   try {
-    const bookingDetails = await fetchBookingDetails({
-      bookingId: request.booking_id,
-      bookingHash: request.booking_hash,
-    });
-
     const accessCode = await getAccessCodeFromBookingId(request.booking_id);
 
-    const updatedAccessCode = await updateAccessCode({
-      access_code_id: accessCode.access_code_id,
-      starts_at: formatDate(bookingDetails.start_date_time),
-      ends_at: formatDate(bookingDetails.end_date_time),
-    });
+    if (accessCode) {
+      const bookingDetails = await fetchBookingDetails({
+        bookingId: request.booking_id,
+        bookingHash: request.booking_hash,
+      });
 
-    console.info(
-      `SUCCESS: Access code ${
-        accessCode.code
-      } successfully updated, now active from ${formatDate(
-        bookingDetails.start_date_time
-      )} to ${formatDate(bookingDetails.end_date_time)}`
-    );
-    return res.status(200).json(updatedAccessCode);
+      const updatedAccessCode = await updateAccessCode({
+        access_code_id: accessCode.access_code_id,
+        starts_at: formatDate(bookingDetails.start_date_time),
+        ends_at: formatDate(bookingDetails.end_date_time),
+      });
+
+      await sendEmail({
+        clientName: bookingDetails.client_name,
+        clientEmail: bookingDetails.client_email,
+        code: accessCode.code,
+        templateId: 2,
+      });
+
+      console.info(
+        `SUCCESS: Access code ${
+          accessCode.code
+        } successfully updated, now active from ${formatDate(
+          bookingDetails.start_date_time
+        )} to ${formatDate(bookingDetails.end_date_time)}, email sent to ${
+          bookingDetails.client_email
+        }`
+      );
+
+      return res.status(200).json(updatedAccessCode);
+    }
   } catch (error) {
     console.info(
       'ERROR: failed to handle webhook on trigger "update" due to the following error:',
