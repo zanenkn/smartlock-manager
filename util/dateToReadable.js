@@ -1,11 +1,7 @@
-function dateToReadable(dateTimeString) {
-  const [datePart, timePart] = dateTimeString.split(' ');
+const { DateTime } = require('luxon');
 
-  const [year, month, day] = datePart.split('-');
-
-  const [hours, minutes] = timePart.split(':');
-
-  return `${day}/${month}/${year} ${hours}:${minutes}`;
+function dateToReadable(dateString) {
+  return DateTime.fromSQL(dateString).toFormat('dd/MM/yyyy HH:mm');
 }
 
 module.exports = dateToReadable;
