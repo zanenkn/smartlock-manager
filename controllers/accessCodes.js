@@ -11,6 +11,7 @@ async function createAccessCode({
       'https://connect.getseam.com/access_codes/create',
       {
         device_id: process.env.SEAM_DEVICE_ID,
+        timezone: 'Europe/Paris',
         name,
         starts_at,
         ends_at,
@@ -79,6 +80,7 @@ async function updateAccessCode({ access_code_id, starts_at, ends_at }) {
         access_code_id,
         starts_at,
         ends_at,
+        timezone: 'Europe/Paris',
       },
       {
         headers: {
