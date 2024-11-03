@@ -19,7 +19,7 @@ async function handleCreate(request, res) {
 
     const accessCode = await createAccessCode({
       name: `Booking nr. ${request.booking_id} for ${bookingDetails.client_name}`,
-      starts_at: dateToISO(bookingDetails.start_date_time),
+      starts_at: dateToISO(bookingDetails.start_date_time, { start: true }),
       ends_at: dateToISO(bookingDetails.end_date_time),
       preferred_code_length: 4,
     });
@@ -61,7 +61,7 @@ async function handleUpdate(request, res) {
 
       const updatedAccessCode = await updateAccessCode({
         access_code_id: accessCode.access_code_id,
-        starts_at: dateToISO(bookingDetails.start_date_time),
+        starts_at: dateToISO(bookingDetails.start_date_time, { start: true }),
         ends_at: dateToISO(bookingDetails.end_date_time),
       });
 
